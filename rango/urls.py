@@ -1,7 +1,7 @@
 from django.urls import path
 from rango import views
 
-# url mapping
+# rango url mapping
 
 app_name = 'rango'
 urlpatterns = [

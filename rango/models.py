@@ -3,6 +3,8 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 
+# category data model
+
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
     views = models.IntegerField(default=0)
@@ -20,6 +22,8 @@ class Category(models.Model):
         return self.name
 
 
+# page data model
+
 class Page(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
@@ -29,6 +33,8 @@ class Page(models.Model):
     def __str__(self):
         return self.title
 
+
+# user profile data model
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

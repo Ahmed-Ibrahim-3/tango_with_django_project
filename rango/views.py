@@ -16,7 +16,7 @@ from datetime import datetime
 
 # _____________________________ #
 # Base pages - available to all #
-# ______________________________#
+# _____________________________ #
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -105,10 +105,10 @@ def user_login(request):
     else:
         return render(request, 'rango/login.html')
 
+# _________________________________ #
+# restricted pages - login required #
+# _________________________________ #
 
-# _________________________________________________ #
-# restricted pages - available to authorised users  #
-# _________________________________________________ #
 
 @login_required
 def add_category(request):
