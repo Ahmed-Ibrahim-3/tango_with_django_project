@@ -14,6 +14,10 @@ from rango.forms import UserForm, UserProfileForm
 from datetime import datetime
 
 
+# _____________________________ #
+# Base pages - available to all #
+# ______________________________#
+
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
@@ -47,51 +51,6 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
 
     return render(request, 'rango/category.html', context=context_dict)
-
-
-@login_required
-def add_category(request):
-    form = CategoryForm()
-
-    if request.method == 'POST':
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('/rango/')
-        else:
-            print(form.errors)
-    return render(request, 'rango/add_category.html', {'form': form})
-
-
-@login_required
-def add_page(request, category_name_slug):
-    try:
-        category = Category.objects.get(slug=category_name_slug)
-    except Category.DoesNotExist:
-        category = None
-
-    if category is None:
-        return redirect('/rango/')
-
-    form = PageForm()
-
-    if request.method == 'POST':
-        form = PageForm(request.POST)
-
-        if form.is_valid():
-            if category:
-                page = form.save(commit=False)
-                page.category = category
-                page.views = 0
-                page.save()
-
-                return redirect(reverse('rango:show_category',
-                                        kwargs={'category_name_slug': category_name_slug}))
-        else:
-            print(form.errors)
-
-    context_dict = {'form': form, 'category': category}
-    return render(request, 'rango/add_page.html', context=context_dict)
 
 
 def register(request):
@@ -147,6 +106,55 @@ def user_login(request):
         return render(request, 'rango/login.html')
 
 
+# _________________________________________________ #
+# restricted pages - available to authorised users  #
+# _________________________________________________ #
+
+@login_required
+def add_category(request):
+    form = CategoryForm()
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/rango/')
+        else:
+            print(form.errors)
+    return render(request, 'rango/add_category.html', {'form': form})
+
+
+@login_required
+def add_page(request, category_name_slug):
+    try:
+        category = Category.objects.get(slug=category_name_slug)
+    except Category.DoesNotExist:
+        category = None
+
+    if category is None:
+        return redirect('/rango/')
+
+    form = PageForm()
+
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+
+                return redirect(reverse('rango:show_category',
+                                        kwargs={'category_name_slug': category_name_slug}))
+        else:
+            print(form.errors)
+
+    context_dict = {'form': form, 'category': category}
+    return render(request, 'rango/add_page.html', context=context_dict)
+
+
 @login_required
 def restricted(request):
     return render(request, 'rango/restricted.html')
@@ -158,7 +166,9 @@ def user_logout(request):
     return redirect(reverse('rango:index'))
 
 
-# helper method
+# ______________ #
+# helper methods #
+# ______________ #
 def visitor_cookie_handler(request):
     visits = int(get_server_side_cookie(request, 'visits', '1'))
     last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
@@ -172,7 +182,6 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 
-# helper method
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:

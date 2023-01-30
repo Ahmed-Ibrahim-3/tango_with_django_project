@@ -9,6 +9,8 @@ from rango.models import Category, Page
 
 
 def populate():
+
+    # pages to be added
     python_pages = [
         {'title': 'Official Python Tutorial',
          'url': 'https://docs.python.org/3/tutorial/',
@@ -42,22 +44,27 @@ def populate():
          'url': 'https://youtu.be/dQw4w9WgXcQ',
          'views': 999999999999}
     ]
+
+    # categories to be added
     cats = {
         'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
         'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
         'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16}
     }
 
+    # adding categories & pages
     for cat, cat_data in cats.items():
         c = add_cat(cat, cat_data['views'], cat_data['likes'])
         for p in cat_data['pages']:
             add_page(c, p['title'], p['url'], p['views'])
 
+    # print confirmation of page added
     for c in Category.objects.all():
         for p in Page.objects.filter(category=c):
             print(f'- {c}:{p}')
 
 
+# add page helper method
 def add_page(cat, title, url, views=0):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
     p.url = url
@@ -66,6 +73,7 @@ def add_page(cat, title, url, views=0):
     return p
 
 
+# add category helper method
 def add_cat(name, views=0, likes=0):
     c = Category.objects.get_or_create(name=name, views=views, likes=likes)[0]
     c.views = views
