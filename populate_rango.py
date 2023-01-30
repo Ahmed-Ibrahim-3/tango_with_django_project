@@ -13,24 +13,24 @@ def populate():
     # pages to be added
     python_pages = [
         {'title': 'Official Python Tutorial',
-         'url': 'https://docs.python.org/3/tutorial/',
+         'url': 'http://docs.python.org/3/tutorial/',
          'views': 120},
         {'title': 'How to Think like a Computer Scientist',
          'url': 'http://www.greenteapress.com/thinkpython/',
          'views': 116},
         {'title': 'Learn Python in 10 Minutes',
-         'url': 'https://www.korokithakis.net/tutorials/python/',
+         'url': 'http://www.korokithakis.net/tutorials/python/',
          'views': 119}
     ]
     django_pages = [
         {'title': 'Official Django Tutorial',
-         'url': 'https://docs.djangoproject.com/en/2.1/intro/tutorial01/',
+         'url': 'http://docs.djangoproject.com/en/2.1/intro/tutorial01/',
          'views': 81},
         {'title': 'Django Rocks',
-         'url': 'https://www.djangorocks.com/',
+         'url': 'http://www.djangorocks.com/',
          'views': 53},
         {'title': 'How to Tango with Django',
-         'url': 'https://www.tangowithdjango.com/',
+         'url': 'http://www.tangowithdjango.com/',
          'views': 118}
     ]
     other_pages = [
@@ -40,9 +40,6 @@ def populate():
         {'title': 'Flask',
          'url': 'http://flask.pocoo.org',
          'views': 117},
-        {'title': '???',
-         'url': 'https://youtu.be/dQw4w9WgXcQ',
-         'views': 999999999999}
     ]
 
     # categories to be added
